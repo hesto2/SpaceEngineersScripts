@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleDoor", "ToggleDoor\ToggleDoor.csproj", "{9DFD6CA0-4A3B-4761-A2D5-F2C6BB0EA24E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Get Battery Percent", "Get Battery Percent\Get Battery Percent.csproj", "{EBA5AC7D-1A4E-475B-88B4-722B176FEBDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -12,6 +14,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9DFD6CA0-4A3B-4761-A2D5-F2C6BB0EA24E}.Debug|x64.ActiveCfg = Debug|x64
 		{9DFD6CA0-4A3B-4761-A2D5-F2C6BB0EA24E}.Debug|x64.Build.0 = Debug|x64
+		{EBA5AC7D-1A4E-475B-88B4-722B176FEBDA}.Debug|x64.ActiveCfg = Debug|x64
+		{EBA5AC7D-1A4E-475B-88B4-722B176FEBDA}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
