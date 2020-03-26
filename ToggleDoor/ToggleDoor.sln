@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleDoor", "ToggleDoor\ToggleDoor.csproj", "{9DFD6CA0-4A3B-4761-A2D5-F2C6BB0EA24E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9DFD6CA0-4A3B-4761-A2D5-F2C6BB0EA24E}.Debug|x64.ActiveCfg = Debug|x64
+		{9DFD6CA0-4A3B-4761-A2D5-F2C6BB0EA24E}.Debug|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AD354DD6-2DDC-4E39-A186-7B0D44132767}
+	EndGlobalSection
+EndGlobal
