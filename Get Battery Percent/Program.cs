@@ -26,58 +26,21 @@ namespace IngameScript
             Runtime.UpdateFrequency = UpdateFrequency.Update100;
         }
 
-        List<IMyBatteryBlock> TMP_LIST = new List<IMyBatteryBlock>();
+        List<IMyBatteryBlock> BATTERIES = new List<IMyBatteryBlock>();
         static IMyProgrammableBlock thisCPU = null;
         void Main(string argument)
         {
-            if (argument == "find new" || TMP_LIST.Count == 0)
+            if (argument == "refresh" || BATTERIES.Count == 0)
             {
-                GridTerminalSystem.GetBlocksOfType<IMyBatteryBlock>(TMP_LIST);
+                GridTerminalSystem.GetBlocksOfType<IMyBatteryBlock>(BATTERIES, b => b.IsSameConstructAs(Me));
             }
-            float totalCapacity = 0;
-            float currentAmount = 0;
-            foreach (IMyBatteryBlock b in TMP_LIST)
-            {
-                if (IsLocal(b, GridTerminalSystem))
-                {
-                    totalCapacity += b.MaxStoredPower;
-                    currentAmount += b.CurrentStoredPower;
-                }
-            }
+
+            float totalCapacity = BlockUtils.GetSumOfBlockAttribute<IMyBatteryBlock>(b => b.MaxStoredPower, BATTERIES);
+            float currentAmount = BlockUtils.GetSumOfBlockAttribute<IMyBatteryBlock>(b => b.CurrentStoredPower, BATTERIES);
+
             int chargePercent = (int)(currentAmount / totalCapacity * 100);
             IMyTextSurface screen = GridTerminalSystem.GetBlockWithName("BatteryLCD") as IMyTextSurface;
             screen.WriteText($"Battery: \n {chargePercent}%");
         }
-
-        // Returns the Programmble Block which is currently executing this script.
-        public static IMyProgrammableBlock getThisCPU(IMyGridTerminalSystem gts)
-        {
-            if (thisCPU != null)
-            {
-                return thisCPU;
-            }
-            List<IMyProgrammableBlock> pbs = new List<IMyProgrammableBlock>();
-            gts.GetBlocksOfType<IMyProgrammableBlock>(pbs);
-            foreach(IMyProgrammableBlock pb in pbs)
-            {
-                if (pb.IsRunning)
-                {
-                    thisCPU = pb;
-                    return pb;
-                };
-            }
-            return null;
-        }
-        public static bool filterPB(IMyProgrammableBlock b)
-        {
-            return (b as IMyProgrammableBlock).IsRunning;
-        }
-
-        // Returns true if a block is on the same grid as the running script's Programmable Block
-        public static bool IsLocal(IMyBatteryBlock b, IMyGridTerminalSystem gts)
-        {
-            return (b.CubeGrid == getThisCPU(gts).CubeGrid);
-        }
-
     }
 }

@@ -9,7 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Get Battery Percent", "Get 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtendDrillPistons", "ExtendDrillPistons\ExtendDrillPistons.csproj", "{74C0D2C8-9E80-4DFB-BAC2-7044EFA19A6E}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Mixins", "Mixins\Mixins.shproj", "{4ACC742B-7B75-417B-90B2-911FB8FBD4CE}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Mixins\Mixins.projitems*{4acc742b-7b75-417b-90b2-911fb8fbd4ce}*SharedItemsImports = 13
+		Mixins\Mixins.projitems*{eba5ac7d-1a4e-475b-88b4-722b176febda}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 	EndGlobalSection
