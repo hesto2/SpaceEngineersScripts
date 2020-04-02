@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PutProjectionToProduction",
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ComponentDictionary", "ComponentDictionary\ComponentDictionary.shproj", "{3ACCBFD4-FF42-473B-8705-B26634C8AEDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlArm", "ControlArm\ControlArm.csproj", "{1EA2E578-73B7-4EF5-BB0B-ECD0B1518CA2}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ComponentDictionary\ComponentDictionary.projitems*{3accbfd4-ff42-473b-8705-b26634c8aedf}*SharedItemsImports = 13
@@ -34,6 +36,8 @@ Global
 		{74C0D2C8-9E80-4DFB-BAC2-7044EFA19A6E}.Debug|x64.Build.0 = Debug|x64
 		{D7FDE310-4114-47DC-99B6-52688559D6DC}.Debug|x64.ActiveCfg = Debug|x64
 		{D7FDE310-4114-47DC-99B6-52688559D6DC}.Debug|x64.Build.0 = Debug|x64
+		{1EA2E578-73B7-4EF5-BB0B-ECD0B1518CA2}.Debug|x64.ActiveCfg = Debug|x64
+		{1EA2E578-73B7-4EF5-BB0B-ECD0B1518CA2}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
