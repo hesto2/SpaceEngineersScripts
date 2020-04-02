@@ -42,48 +42,53 @@ namespace IngameScript
     }
     partial class Program : MyGridProgram
     {
+        IMyAssembler assembler;
+        public void AddToProduction(string componentType, int amount)
+        {
+            MyDefinitionId definition = MyDefinitionId.Parse($"MyObjectBuilder_BlueprintDefinition/{ComponentUtils.GetComponentSubType(componentType)}");
+            assembler.AddQueueItem(definition, (double)amount);
+        }
+        
         public void Main(string argument, UpdateType updateSource)
         {
             //Create support for an ini file that contains the name of the target assembler and an optional LCD to indicate percentage as well as the id of the projector
             // Also create a flag for large or small grid requirements
-           //Dictionary<string, int> REQUIRED_COMPONENTS = new Dictionary<string, int>();
-           // List<IMyProjector> LIST = new List<IMyProjector>();
-           // GridTerminalSystem.GetBlocksOfType<IMyProjector>(LIST);
-           // if(LIST.Count == 0)
-           // {
-           //     throw new Exception("Projector is required");
-           // }
+            Dictionary<string, int> REQUIRED_COMPONENTS = new Dictionary<string, int>();
+            List<IMyProjector> LIST = new List<IMyProjector>();
+            GridTerminalSystem.GetBlocksOfType<IMyProjector>(LIST);
+            assembler = GridTerminalSystem.GetBlockWithName("Basic Assembler") as IMyAssembler;
+            if (LIST.Count == 0)
+            {
+                throw new Exception("Projector is required");
+            }
 
-           // // Parse detailed info from projector
-           // IMyProjector projector = LIST[0];
-           // ProjectorDetails details = new ProjectorDetails(projector.DetailedInfo, Echo);
+            // Parse detailed info from projector
+            IMyProjector projector = LIST[0];
+            ProjectorDetails details = new ProjectorDetails(projector.DetailedInfo, Echo);
 
-           // // Convert parsed info into a list of required components
-           // foreach(String blockName in details.BlocksRemaining.Keys)
-           // {
+            // Convert parsed info into a list of required components
+            foreach (String blockName in details.BlocksRemaining.Keys)
+            {
 
-           //     Dictionary<string, int> requiredComponents;
-           //     if (ComponentUtils.SmallShipComponentPieces.TryGetValue(blockName, out requiredComponents))
-           //     {
-           //        foreach(string componentName in requiredComponents.Keys)
-           //         {
-           //             int currentAmount;
-           //             REQUIRED_COMPONENTS.TryGetValue(componentName, out currentAmount);
-           //             // Multiply the new required components by the total amount of that block we are needing to build
-           //             currentAmount += (requiredComponents.GetValueOrDefault(componentName) * details.BlocksRemaining[blockName]);
-           //             REQUIRED_COMPONENTS[componentName] = currentAmount;
-           //         }
-           //     }
-           // }
+                Dictionary<string, int> requiredComponentsForBlock;
+                if (ComponentUtils.SmallShipComponentPieces.TryGetValue(blockName, out requiredComponentsForBlock))
+                {
+                    foreach (string componentName in requiredComponentsForBlock.Keys)
+                    {
+                        int currentAmount;
+                        REQUIRED_COMPONENTS.TryGetValue(componentName, out currentAmount);
+                        // Multiply the new required components by the total amount of that block we are needing to build
+                        currentAmount += (requiredComponentsForBlock.GetValueOrDefault(componentName) * details.BlocksRemaining[blockName]);
+                        REQUIRED_COMPONENTS[componentName] = currentAmount;
+                    }
+                }
+            }
 
 
-            // Add components to the assembler
-            IMyAssembler assembler = GridTerminalSystem.GetBlockWithName("Basic Assembler") as IMyAssembler;
-            Echo(assembler.ToString());
-            MyDefinitionId test = MyDefinitionId.Parse("MyObjectBuilder_BlueprintDefinition/MotorComponent");
-            Echo(test.ToString());
-            assembler.AddQueueItem(test, (double)10);
-            Echo("Done");
+            foreach(string k in REQUIRED_COMPONENTS.Keys)
+            {
+                this.AddToProduction(k, REQUIRED_COMPONENTS[k]);
+            }
         }
     }
 }
