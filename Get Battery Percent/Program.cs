@@ -26,6 +26,7 @@ namespace IngameScript
             Runtime.UpdateFrequency = UpdateFrequency.Update100;
         }
 
+        MyIni _ini = new MyIni();
         List<IMyBatteryBlock> BATTERIES = new List<IMyBatteryBlock>();
         static IMyProgrammableBlock thisCPU = null;
         void Main(string argument)

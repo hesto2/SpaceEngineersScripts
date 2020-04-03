@@ -46,59 +46,91 @@ namespace IngameScript
             Runtime.UpdateFrequency = UpdateFrequency.Update1;
         }
 
+
+        MyIni _ini = new MyIni();
         InputReader reader = null;
-        IMyMotorStator rotorX;
-        IMyMotorStator rotorY;
-        IMyMotorStator rotorZ;
-        List<IMyPistonBase> pistons = new List<IMyPistonBase>();
+        Dictionary<BindableKey, ConfigItem> Bindings = new Dictionary<BindableKey, ConfigItem>();
+        enum BindableKey
+        {
+            AD, 
+            WS, 
+            CSpace, 
+            QE, 
+            MouseX, 
+            MouseY, 
+        }
+
+        public void MapConfigs()
+        {
+            foreach(BindableKey k in Enum.GetValues(typeof(BindableKey)))
+            {
+                Bindings[k] = new ConfigItem(_ini, k.ToString(), GridTerminalSystem);
+            }
+        }
+
+
+
         public void Main(string argument, UpdateType updateSource)
         {
            if(reader == null || argument.Equals("refresh"))
             {
-                reader = new InputReader(GridTerminalSystem, Echo);
-                rotorX = GridTerminalSystem.GetBlockWithName("Rotor 2") as IMyMotorStator;
-                rotorY = GridTerminalSystem.GetBlockWithName("Rotor") as IMyMotorStator;
-                GridTerminalSystem.GetBlockGroupWithName("Pistons").GetBlocksOfType<IMyPistonBase>(pistons) ;
-            }
-            //IMyTextSurface screen = GridTerminalSystem.GetBlockWithName("LCD") as IMyTextSurface;
-            //screen.WriteText(input);
-
-            rotorX.TargetVelocityRPM = 0;
-            rotorY.TargetVelocityRPM = 0;
-            foreach(IMyPistonBase p in pistons)
-            {
-                p.Velocity = 0;
-            }
-            Input input = reader.ReadInput();
-            if (input.D) {
-                rotorX.TargetVelocityRPM = 5;
-            }
-            if (input.A)
-            {
-                rotorX.TargetVelocityRPM = -5;
-            }
-            if (input.C)
-            {
-                rotorY.TargetVelocityRPM = -5;
-            }
-            if (input.Space)
-            {
-                rotorY.TargetVelocityRPM = 5;
-            }
-            Echo(pistons.Count.ToString());
-            if (input.W)
-            {
-                foreach(IMyPistonBase p in pistons)
+                Bindings.Clear();
+                MyIniParseResult result;
+                if(!_ini.TryParse(Me.CustomData, out result))
                 {
-                    p.Velocity = 1f; 
+                    throw new Exception(result.ToString());
                 }
-               
+
+                this.MapConfigs();
+                
+                reader = new InputReader(GridTerminalSystem, _ini.Get("Cockpit", "BlockName").ToString("Cockpit"));
             }
-            if (input.S)
+
+            Input input = reader.ReadInput();
+
+            Dictionary<BindableKey, bool> positiveMappings = new Dictionary<BindableKey, bool>() { 
+                {BindableKey.AD, input.D },
+                {BindableKey.WS, input.W },
+                {BindableKey.CSpace, input.Space },
+                {BindableKey.QE, input.E },
+            };
+
+            Dictionary<BindableKey, bool> negativeMappings = new Dictionary<BindableKey, bool>() { 
+                {BindableKey.AD, input.A },
+                {BindableKey.WS, input.S },
+                {BindableKey.CSpace, input.C},
+                {BindableKey.QE, input.Q },
+            };
+
+            foreach(BindableKey k in Enum.GetValues(typeof(BindableKey)))
             {
-                foreach(IMyPistonBase p in pistons)
+                if (!Bindings.ContainsKey(k)){
+                    continue;
+                }
+
+                Bindings[k].Reset();
+                // Handle Mouse bindings
+                if(k == BindableKey.MouseX)
                 {
-                    p.Velocity = -1f;
+                    Bindings[k].ModifySpeed(input.MouseX);
+                    continue;
+                }
+
+                if(k == BindableKey.MouseY)
+                {
+                    Bindings[k].ModifySpeed(input.MouseY);
+                    continue;
+                }
+
+
+                //Handle Keyboard Bindings
+                if (positiveMappings[k]) 
+                {
+                    Bindings[k].ModifySpeed(1f);
+                }
+                else if(negativeMappings[k])
+                {
+                    Bindings[k].ModifySpeed(-1f);
                 }
             }
 

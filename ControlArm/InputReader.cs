@@ -44,20 +44,18 @@ namespace IngameScript
                 this.E = RollIndicator > 0;
                 this.C = MoveIndicator.Y < 0;
                 this.Space = MoveIndicator.Y > 0;
-                this.MouseX = RotateIndicator.X;
-                this.MouseY = RotateIndicator.Y;
+                this.MouseX = RotateIndicator.Y;
+                this.MouseY = RotateIndicator.X;
             }
         }
         public class InputReader
         {
             IMyGridTerminalSystem GridTerminalSystem;
-            Action<string> Echo;
             IMyShipController ShipController;
-            public InputReader(IMyGridTerminalSystem GridTerminalSystem, Action<string> Echo)
+            public InputReader(IMyGridTerminalSystem GridTerminalSystem,string CockpitName)
             {
                 this.GridTerminalSystem = GridTerminalSystem;
-                this.Echo = Echo;
-                this.ShipController = GridTerminalSystem.GetBlockWithName("Cockpit") as IMyShipController;
+                this.ShipController = GridTerminalSystem.GetBlockWithName(CockpitName) as IMyShipController;
             }
 
             public Input ReadInput()

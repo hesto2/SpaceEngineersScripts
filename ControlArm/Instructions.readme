@@ -1,5 +1,34 @@
 ﻿R e a d m e
 -----------
+Example configuration:
+[AD]
+BlockName=RotorX
+IsGroup=false
+Speed=1
 
-In this file you can include any instructions or other comments you want to have injected onto the 
-top of your final script. You can safely delete this file if you do not want any such comments.
+[WS]
+BlockName=Pistons
+IsGroup=true
+;defaults to assuming it is a rotor
+IsPiston=true
+Speed=1.5
+
+[CS]
+BlockName=RotorY
+;-1 speed for reversing
+Speed=-1
+
+[QE]
+;not used
+
+[MouseX]
+BlockName=RotorZ
+;Use a lower speed on the mouse movements, they are very sensitive
+Speed=.5
+
+[MouseY]
+;Use a lower speed on the mouse movements, they are very sensitive
+Speed=.5
+
+[Cockpit]
+BlockName=Cockpit
