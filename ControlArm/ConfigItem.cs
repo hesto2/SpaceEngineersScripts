@@ -42,10 +42,18 @@ namespace IngameScript
                     if (this.IsPiston)
                     {
                         this.Pistons.Add(GridTerminalSystem.GetBlockWithName(this.BlockName) as IMyPistonBase) ;
+                        if(Pistons.Count == 0)
+                        {
+                            throw new Exception($"Couldn't find piston group for {key}");
+                        }
                     }
                     else
                     {
                         this.Rotors.Add(GridTerminalSystem.GetBlockWithName(this.BlockName) as IMyMotorStator) ;
+                        if(Rotors.Count == 0)
+                        {
+                            throw new Exception($"Couldn't find rotor group for {key}");
+                        }
                     }
                 }
                 else 
@@ -54,10 +62,18 @@ namespace IngameScript
                     if (this.IsPiston)
                     {
                         Blocks.GetBlocksOfType<IMyPistonBase>(this.Pistons);
+                        if(Pistons.Count == 0)
+                        {
+                            throw new Exception($"Couldn't find pistons for {key}");
+                        }
                     }
                     else
                     {
                         Blocks.GetBlocksOfType<IMyMotorStator>(this.Rotors);
+                        if(Rotors.Count == 0)
+                        {
+                            throw new Exception($"Couldn't find rotors for {key}");
+                        }
                     }
                 }
             }
@@ -78,12 +94,18 @@ namespace IngameScript
             public void ModifySpeed(float speed) {
                 foreach(IMyPistonBase p in Pistons)
                 {
-                    ModifyPistonSpeed(p, speed);
+                    if(p != null)
+                    {
+                        ModifyPistonSpeed(p, speed);
+                    }
                 }
 
                 foreach(IMyMotorStator r in Rotors)
                 {
-                    ModifyRotorSpeed(r, speed);
+                    if(r != null)
+                    {
+                        ModifyRotorSpeed(r, speed);
+                    }
                 }
             }
         }

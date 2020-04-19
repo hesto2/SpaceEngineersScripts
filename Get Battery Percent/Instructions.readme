@@ -1,5 +1,7 @@
 ﻿R e a d m e
 -----------
-
-In this file you can include any instructions or other comments you want to have injected onto the 
-top of your final script. You can safely delete this file if you do not want any such comments.
+Example config
+[Config]
+BlockName= ;the id of the block to target the script at 
+IsProvider= ;boolean whether the target block is a text surface provider or not
+ProviderScreenIndex= ;integer index of the screen to display on

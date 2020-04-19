@@ -10,5 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BlockUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LCDConfigItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LCDUtils.cs" />
   </ItemGroup>
 </Project>

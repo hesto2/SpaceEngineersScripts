@@ -28,20 +28,20 @@ namespace IngameScript
 
         MyIni _ini = new MyIni();
         List<IMyBatteryBlock> BATTERIES = new List<IMyBatteryBlock>();
-        static IMyProgrammableBlock thisCPU = null;
-        void Main(string argument)
+        IMyTextSurface TargetScreen;
+        public void Main(string argument)
         {
             if (argument == "refresh" || BATTERIES.Count == 0)
             {
                 GridTerminalSystem.GetBlocksOfType<IMyBatteryBlock>(BATTERIES, b => b.IsSameConstructAs(Me));
+                TargetScreen = LCDUtils.GetScreen(_ini, GridTerminalSystem, Me);
             }
 
             float totalCapacity = BlockUtils.GetSumOfBlockAttribute<IMyBatteryBlock>(b => b.MaxStoredPower, BATTERIES);
             float currentAmount = BlockUtils.GetSumOfBlockAttribute<IMyBatteryBlock>(b => b.CurrentStoredPower, BATTERIES);
 
             int chargePercent = (int)(currentAmount / totalCapacity * 100);
-            IMyTextSurface screen = GridTerminalSystem.GetBlockWithName("BatteryLCD") as IMyTextSurface;
-            screen.WriteText($"Battery: \n {chargePercent}%");
+            TargetScreen.WriteText($"Battery: \n {chargePercent}%");
         }
     }
 }
