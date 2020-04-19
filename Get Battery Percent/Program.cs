@@ -34,7 +34,7 @@ namespace IngameScript
             if (argument == "refresh" || BATTERIES.Count == 0)
             {
                 GridTerminalSystem.GetBlocksOfType<IMyBatteryBlock>(BATTERIES, b => b.IsSameConstructAs(Me));
-                TargetScreen = LCDUtils.GetScreen(_ini, GridTerminalSystem, Me);
+                TargetScreen = LCDUtils.GetScreen(GridTerminalSystem, Me);
             }
 
             float totalCapacity = BlockUtils.GetSumOfBlockAttribute<IMyBatteryBlock>(b => b.MaxStoredPower, BATTERIES);

@@ -1,0 +1,28 @@
+﻿R e a d m e
+-----------
+[Config]
+Construction=500
+Motor=200
+
+Types: (config name vs actual name)
+{"Construction","ConstructionComponent"},
+{"MetalGrid","MetalGrid"},
+{"InteriorPlate","InteriorPlate"},
+{"SteelPlate","SteelPlate"},
+{"Girder","GirderComponent"},
+{"SmallTube","SmallTube"},
+{"LargeTube","LargeTube"},
+{"Motor","MotorComponent"},
+{"Display","Display"},
+{"BulletproofGlass","BulletproofGlass"},
+{"Superconductor","Superconductor"},
+{"Computer","ComputerComponent"},
+{"Reactor","ReactorComponent"},
+{"Thrust","ThrustComponent"},
+{"GravityGenerator","GravityGeneratorComponent"},
+{"Medical","MedicalComponent"},
+{"RadioCommunication","RadioCommunicationComponent"},
+{"Detector","DetectorComponent"},
+{"Explosives","ExplosivesComponent"},
+{"SolarCell","SolarCell"},
+{"PowerCell","PowerCell"},

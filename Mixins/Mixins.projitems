@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BlockUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IniConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InventoryUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LCDConfigItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LCDUtils.cs" />
   </ItemGroup>

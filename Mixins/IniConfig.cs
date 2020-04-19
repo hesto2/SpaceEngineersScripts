@@ -21,21 +21,15 @@ namespace IngameScript
 {
     partial class Program
     {
-        public class LCDConfigItem : IniConfig
+        public class IniConfig
         {
-            string CONFIG_TITLE = "LCDConfig";
-            public string BlockName;
-            public bool IsProvider;
-            public int ProviderScreenIndex;
-            
-            // Expects the ini to have a line for [LCDConfig]
-            public LCDConfigItem(IMyProgrammableBlock Me) : base( Me)
+            public MyIni _ini = new MyIni();
+            public IniConfig(IMyProgrammableBlock Me)
             {
-                BlockName = _ini.Get(CONFIG_TITLE, "BlockName").ToString();
-                IsProvider= _ini.Get(CONFIG_TITLE, "IsProvider").ToBoolean();
-                ProviderScreenIndex = _ini.Get(CONFIG_TITLE, "ProviderScreenIndex").ToInt32();
+                MyIniParseResult result;
+                if (!_ini.TryParse(Me.CustomData, out result))
+                    throw new Exception(result.ToString());
             }
-
         }
     }
 }

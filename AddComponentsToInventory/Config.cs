@@ -21,19 +21,19 @@ namespace IngameScript
 {
     partial class Program
     {
-        public class LCDUtils
+        public class Config : IniConfig
         {
-            public static IMyTextSurface GetScreen(IMyGridTerminalSystem GridTerminalSystem, IMyProgrammableBlock Me)
+            public string ConfigTitle = "Config";
+            public Dictionary<string, MyFixedPoint> ItemList = new Dictionary<string, MyFixedPoint>();
+            public Config(IMyProgrammableBlock Me): base(Me)
             {
-                LCDConfigItem config  = new LCDConfigItem(Me);
-                if (config.IsProvider)
+                List<MyIniKey> keys = new List<MyIniKey>();
+                _ini.GetKeys(ConfigTitle, keys);
+                for(int i = 0; i < keys.Count; i++)
                 {
-                    IMyTextSurfaceProvider surfaceProvider = GridTerminalSystem.GetBlockWithName(config.BlockName) as IMyTextSurfaceProvider;
-                    return surfaceProvider.GetSurface(config.ProviderScreenIndex);
-                }
-                else
-                {
-                    return GridTerminalSystem.GetBlockWithName(config.BlockName) as IMyTextSurface;
+                    string keyName = keys[i].Name;
+                    MyFixedPoint amount = _ini.Get(ConfigTitle, keyName).ToInt32();
+                    ItemList.Add(keyName, amount);
                 }
             }
 

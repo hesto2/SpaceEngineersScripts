@@ -19,12 +19,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlArm", "ControlArm\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanAssemblers", "CleanAssemblers\CleanAssemblers.csproj", "{5CFD2288-6F9E-4FC7-A2E5-7D0F9349E9AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddComponentsToInventory", "AddComponentsToInventory\AddComponentsToInventory.csproj", "{F7C8B9C9-5130-4E8A-ACDE-633B6D0BFB9E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ComponentDictionary\ComponentDictionary.projitems*{3accbfd4-ff42-473b-8705-b26634c8aedf}*SharedItemsImports = 13
 		Mixins\Mixins.projitems*{4acc742b-7b75-417b-90b2-911fb8fbd4ce}*SharedItemsImports = 13
 		ComponentDictionary\ComponentDictionary.projitems*{d7fde310-4114-47dc-99b6-52688559d6dc}*SharedItemsImports = 4
 		Mixins\Mixins.projitems*{eba5ac7d-1a4e-475b-88b4-722b176febda}*SharedItemsImports = 4
+		ComponentDictionary\ComponentDictionary.projitems*{f7c8b9c9-5130-4e8a-acde-633b6d0bfb9e}*SharedItemsImports = 4
+		Mixins\Mixins.projitems*{f7c8b9c9-5130-4e8a-acde-633b6d0bfb9e}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -42,6 +46,8 @@ Global
 		{1EA2E578-73B7-4EF5-BB0B-ECD0B1518CA2}.Debug|x64.Build.0 = Debug|x64
 		{5CFD2288-6F9E-4FC7-A2E5-7D0F9349E9AB}.Debug|x64.ActiveCfg = Debug|x64
 		{5CFD2288-6F9E-4FC7-A2E5-7D0F9349E9AB}.Debug|x64.Build.0 = Debug|x64
+		{F7C8B9C9-5130-4E8A-ACDE-633B6D0BFB9E}.Debug|x64.ActiveCfg = Debug|x64
+		{F7C8B9C9-5130-4E8A-ACDE-633B6D0BFB9E}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
