@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlArm", "ControlArm\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanAssemblers", "CleanAssemblers\CleanAssemblers.csproj", "{5CFD2288-6F9E-4FC7-A2E5-7D0F9349E9AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryManager", "AddComponentsToInventory\InventoryManager.csproj", "{F7C8B9C9-5130-4E8A-ACDE-633B6D0BFB9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryManager", "InventoryManager\InventoryManager.csproj", "{F7C8B9C9-5130-4E8A-ACDE-633B6D0BFB9E}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
