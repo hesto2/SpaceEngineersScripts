@@ -30,58 +30,69 @@ namespace IngameScript
         List<IMyInventory> SourceInventories = new List<IMyInventory>();
         public void Main(string argument, UpdateType updateSource)
         {
-               
-            if(argument.Equals("refresh") || SourceInventories.Count == 0)
+
+            List<IMyShipConnector> connectors = new List<IMyShipConnector>();
+            GridTerminalSystem.GetBlocksOfType<IMyShipConnector>(connectors, b => b.IsSameConstructAs(Me));
+            if (connectors.Count == 0 || connectors[0].Status != MyShipConnectorStatus.Connected)
             {
-                List<IMyShipConnector> connectors = new List<IMyShipConnector>();
-                GridTerminalSystem.GetBlocksOfType<IMyShipConnector>(connectors, b => b.IsSameConstructAs(Me));
-                if (connectors.Count == 0 || connectors[0].Status != MyShipConnectorStatus.Connected)
-                {
-                    throw new Exception("Ship needs a connector");
-                }
-
-                IMyShipConnector targetConnector = connectors[0].OtherConnector;
-
-                List<IMyTerminalBlock> blocks = new List<IMyTerminalBlock>();
-                List<IMyTerminalBlock> sourceBlocks = new List<IMyTerminalBlock>();
-                GridTerminalSystem.GetBlocksOfType<IMyTerminalBlock>(blocks, b=>b.IsSameConstructAs(Me));
-                GridTerminalSystem.GetBlocksOfType<IMyTerminalBlock>(sourceBlocks, b => !b.IsSameConstructAs(Me));
-
-                MyInventories = GetInventoriesFromBlocks(blocks);
-                SourceInventories = GetInventoriesFromBlocks(sourceBlocks);
+                throw new Exception("Ship needs a connector that is connected");
             }
 
-            Dictionary<string, MyFixedPoint> ItemsToGet = new Config(Me).ItemList;
+            IMyShipConnector targetConnector = connectors[0].OtherConnector;
+
+            List<IMyTerminalBlock> blocks = new List<IMyTerminalBlock>();
+            List<IMyTerminalBlock> sourceBlocks = new List<IMyTerminalBlock>();
+            GridTerminalSystem.GetBlocksOfType<IMyTerminalBlock>(blocks, b => b.IsSameConstructAs(Me));
+            GridTerminalSystem.GetBlocksOfType<IMyTerminalBlock>(sourceBlocks, b => !b.IsSameConstructAs(Me));
+
+            MyInventories = InventoryUtils.GetInventoriesFromBlocks(blocks);
+            SourceInventories = InventoryUtils.GetInventoriesFromBlocks(sourceBlocks);
+
+            if (argument.Equals("flush"))
+            {
+                FlushInventories();
+            }
+            else if(argument.Equals("import"))
+            {
+                ImportItemsIntoInventory();
+            }
+
+        }
+
+        void ImportItemsIntoInventory()
+        {
+            Config config = new Config(Me);
+            Dictionary<string, MyFixedPoint> ItemsToGet = config.ItemList;
             Dictionary<string, MyFixedPoint>.Enumerator en = ItemsToGet.GetEnumerator();
             while (en.MoveNext())
             {
                 int CurrentAmountInInventory = InventoryUtils.FindNumberOfItemInInventoriesBySubType(MyInventories, en.Current.Key);
                 int amountToGet = en.Current.Value.ToIntSafe() - CurrentAmountInInventory;
-                Echo($"Amount to get {amountToGet}");
-                if(amountToGet > 0)
+                if (amountToGet > 0)
                 {
-                    AddItemToInventory(en.Current.Key, amountToGet);
+                    Echo($"Getting {amountToGet} {en.Current.Key}");
+                    AddItemToInventory(en.Current.Key, amountToGet, config.FetchAmount);
                 }
             }
         }
 
-        bool AddItemToInventory(string type, int amountRequired)
+        bool AddItemToInventory(string type, int amountRequired, int fetchAmount)
         {
             int amountRemaining = amountRequired;
-            for(int i = 0; i < SourceInventories.Count; i++)
+            for (int i = 0; i < SourceInventories.Count; i++)
             {
                 IMyInventory sourceInventory = SourceInventories[i];
                 Nullable<MyInventoryItem> item = InventoryUtils.FindItemInInventoryBySubType(sourceInventory, type);
-                if(item.HasValue)
+                if (item.HasValue)
                 {
                     int amountToAdd = item.Value.Amount.ToIntSafe() > amountRemaining ? amountRemaining : item.Value.Amount.ToIntSafe();
-                    bool result = InventoryUtils.TransferItemToAvailableInventory(item.Value, (MyFixedPoint) amountToAdd, sourceInventory, MyInventories);
+                    bool result = InventoryUtils.TransferItemToAvailableInventory(item.Value, (MyFixedPoint)amountToAdd, sourceInventory, MyInventories, fetchAmount);
                     if (result)
                     {
                         amountRemaining = amountRemaining - amountToAdd;
                     }
                 }
-                if(amountRemaining <= 0)
+                if (amountRemaining <= 0)
                 {
                     return true;
                 }
@@ -89,10 +100,18 @@ namespace IngameScript
 
             return false;
         }
-        
-        List<IMyInventory> GetInventoriesFromBlocks(List<IMyTerminalBlock> blocks)
+
+        void FlushInventories()
         {
-            return blocks.FindAll(b => b.InventoryCount > 0).Select(b=>b.GetInventory()).ToList();
+            Config config = new Config(Me);
+            MyInventories.ForEach(i=>EmptyInventory(i, config.FetchAmount));
+        }
+
+        void EmptyInventory(IMyInventory inventory, int fetchAmount)
+        {
+            List<MyInventoryItem> items = new List<MyInventoryItem>();
+            inventory.GetItems(items);
+            items.ForEach(item => InventoryUtils.TransferItemToAvailableInventory(item, item.Amount, inventory, SourceInventories, fetchAmount));
         }
     }
 }

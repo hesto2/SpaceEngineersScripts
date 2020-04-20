@@ -26,14 +26,26 @@ namespace IngameScript
             public static IMyTextSurface GetScreen(IMyGridTerminalSystem GridTerminalSystem, IMyProgrammableBlock Me)
             {
                 LCDConfigItem config  = new LCDConfigItem(Me);
+                List<IMyTerminalBlock> blocks = new List<IMyTerminalBlock>();
+                GridTerminalSystem.SearchBlocksOfName(config.BlockName, blocks, b => b.IsSameConstructAs(Me));
+                if (blocks.Count == 0)
+                {
+                    throw new Exception($"No blocks with name \"{config.BlockName}\" found");
+                }
+                if(blocks.Count > 1)
+                {
+                    throw new Exception($"Multiple blocks with name \"{config.BlockName}\" found");
+                }
+
                 if (config.IsProvider)
                 {
-                    IMyTextSurfaceProvider surfaceProvider = GridTerminalSystem.GetBlockWithName(config.BlockName) as IMyTextSurfaceProvider;
+
+                    IMyTextSurfaceProvider surfaceProvider = blocks[0] as IMyTextSurfaceProvider;
                     return surfaceProvider.GetSurface(config.ProviderScreenIndex);
                 }
                 else
                 {
-                    return GridTerminalSystem.GetBlockWithName(config.BlockName) as IMyTextSurface;
+                    return blocks[0] as IMyTextSurface;
                 }
             }
 

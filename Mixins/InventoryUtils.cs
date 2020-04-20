@@ -49,16 +49,21 @@ namespace IngameScript
                 }
                 return null;
             }
+
             public static bool TransferItemToAvailableInventory(MyInventoryItem item, MyFixedPoint amount, IMyInventory sourceInventory, List<IMyInventory> targetInventories)
             {
+                return TransferItemToAvailableInventory(item, amount, sourceInventory, targetInventories, 10);
+            }
+
+            public static bool TransferItemToAvailableInventory(MyInventoryItem item, MyFixedPoint amount, IMyInventory sourceInventory, List<IMyInventory> targetInventories, int fetchAmount)
+            {
                 // Break it up into small chunks and insert them so that it can check if items can be added better
-                const int INSERTION_AMOUNT = 10;
                 int amountRemaining = amount.ToIntSafe();
                 bool allFull = false;
                 
                 while(amountRemaining > 0 && allFull == false)
                 {
-                    MyFixedPoint amountToInsert = amountRemaining < INSERTION_AMOUNT ? amountRemaining : INSERTION_AMOUNT;
+                    MyFixedPoint amountToInsert = amountRemaining < fetchAmount ? amountRemaining : fetchAmount;
                     IMyInventory targetInventory = targetInventories.Find(i => i.CanItemsBeAdded(amountToInsert, item.Type) && i.CanTransferItemTo(sourceInventory, item.Type));
                     if (targetInventory != null)
                     {
@@ -85,6 +90,11 @@ namespace IngameScript
                     }
                 }
                 return -1;
+            }
+
+            public static List<IMyInventory> GetInventoriesFromBlocks(List<IMyTerminalBlock> blocks)
+            {
+                return blocks.FindAll(b => b.InventoryCount > 0).Select(b => b.GetInventory()).ToList();
             }
         }
     }

@@ -24,17 +24,20 @@ namespace IngameScript
         public class Config : IniConfig
         {
             public string ConfigTitle = "Config";
+            public string ListConfigTitle = "List";
             public Dictionary<string, MyFixedPoint> ItemList = new Dictionary<string, MyFixedPoint>();
+            public int FetchAmount = 10;
             public Config(IMyProgrammableBlock Me): base(Me)
             {
                 List<MyIniKey> keys = new List<MyIniKey>();
-                _ini.GetKeys(ConfigTitle, keys);
+                _ini.GetKeys(ListConfigTitle, keys);
                 for(int i = 0; i < keys.Count; i++)
                 {
                     string keyName = keys[i].Name;
-                    MyFixedPoint amount = _ini.Get(ConfigTitle, keyName).ToInt32();
+                    MyFixedPoint amount = _ini.Get(ListConfigTitle, keyName).ToInt32();
                     ItemList.Add(keyName, amount);
                 }
+                FetchAmount = _ini.Get(ConfigTitle, "FetchAmount").ToInt32(FetchAmount);
             }
 
         }

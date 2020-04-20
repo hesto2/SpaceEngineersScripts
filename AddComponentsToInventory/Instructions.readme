@@ -1,28 +1,40 @@
 ﻿R e a d m e
 -----------
+Arguments:
+- import: Brings the components specified in [List] into the inventories of the current ship
+- flush: Empties the inventory of the current ship into the ship it is connected to
+
 [Config]
+FetchAmount=500 
+;This determines how large of increments the items should be deposited/withdrawn in
+; using a small fetch amount for a large number will cause the script to fail due to there being
+; too many iterations
+
+[List]
+;componentname=amountToGet
 Construction=500
 Motor=200
 
-Types: (config name vs actual name)
-{"Construction","ConstructionComponent"},
-{"MetalGrid","MetalGrid"},
-{"InteriorPlate","InteriorPlate"},
-{"SteelPlate","SteelPlate"},
-{"Girder","GirderComponent"},
-{"SmallTube","SmallTube"},
-{"LargeTube","LargeTube"},
-{"Motor","MotorComponent"},
-{"Display","Display"},
-{"BulletproofGlass","BulletproofGlass"},
-{"Superconductor","Superconductor"},
-{"Computer","ComputerComponent"},
-{"Reactor","ReactorComponent"},
-{"Thrust","ThrustComponent"},
-{"GravityGenerator","GravityGeneratorComponent"},
-{"Medical","MedicalComponent"},
-{"RadioCommunication","RadioCommunicationComponent"},
-{"Detector","DetectorComponent"},
-{"Explosives","ExplosivesComponent"},
-{"SolarCell","SolarCell"},
-{"PowerCell","PowerCell"},
+Component names:
+
+Construction
+MetalGrid
+InteriorPlate
+SteelPlate
+Girder
+SmallTube
+LargeTube
+Motor
+Display
+BulletproofGlass
+Superconductor
+Computer
+Reactor
+Thrust
+GravityGenerator
+Medical
+RadioCommunication
+Detector
+Explosives
+SolarCell
+PowerCell
