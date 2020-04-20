@@ -23,6 +23,19 @@ namespace IngameScript
     {
         public class InventoryUtils
         {
+            public static int FindNumberOfItemInInventoriesBySubType(List<IMyInventory> inventories, string subTypeId)
+            {
+                int total = 0;
+                inventories.ForEach(i =>
+                {
+                    Nullable<MyInventoryItem> item = FindItemInInventoryBySubType(i, subTypeId);
+                    if (item.HasValue)
+                    {
+                        total = total + item.Value.Amount.ToIntSafe();
+                    }
+                });
+                return total;
+            }
             public static Nullable<MyInventoryItem> FindItemInInventoryBySubType(IMyInventory inventory, string itemSubType){
                 List<MyInventoryItem> items = new List<MyInventoryItem>();
                 inventory.GetItems(items);
@@ -38,14 +51,26 @@ namespace IngameScript
             }
             public static bool TransferItemToAvailableInventory(MyInventoryItem item, MyFixedPoint amount, IMyInventory sourceInventory, List<IMyInventory> targetInventories)
             {
-                IMyInventory targetInventory = targetInventories.Find(i => i.CanItemsBeAdded(amount, item.Type) && i.IsConnectedTo(sourceInventory));
-                if (targetInventory != null)
+                // Break it up into small chunks and insert them so that it can check if items can be added better
+                const int INSERTION_AMOUNT = 10;
+                int amountRemaining = amount.ToIntSafe();
+                bool allFull = false;
+                
+                while(amountRemaining > 0 && allFull == false)
                 {
-                    int itemIndex = GetItemIndex(item, sourceInventory);
-                    sourceInventory.TransferItemTo(targetInventory, item, amount);
-                    return true;
+                    MyFixedPoint amountToInsert = amountRemaining < INSERTION_AMOUNT ? amountRemaining : INSERTION_AMOUNT;
+                    IMyInventory targetInventory = targetInventories.Find(i => i.CanItemsBeAdded(amountToInsert, item.Type) && i.CanTransferItemTo(sourceInventory, item.Type));
+                    if (targetInventory != null)
+                    {
+                        int itemIndex = GetItemIndex(item, sourceInventory);
+                        sourceInventory.TransferItemTo(targetInventory, item, amountToInsert);
+                        amountRemaining = amountRemaining - amountToInsert.ToIntSafe();
+                        continue;
+                    }
+                    allFull = true;
                 }
-                return false;
+               
+                return amountRemaining <= 0;
             }
 
             public static int GetItemIndex(MyInventoryItem item, IMyInventory inventory)

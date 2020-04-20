@@ -49,21 +49,20 @@ namespace IngameScript
 
                 MyInventories = GetInventoriesFromBlocks(blocks);
                 SourceInventories = GetInventoriesFromBlocks(sourceBlocks);
-                //MyInventories.ForEach(i =>
-                //{
-                //    List<MyInventoryItem> items = new List<MyInventoryItem>();
-                //    i.GetItems(items);
-                //    items.ForEach(ii => Echo(ii.Type.SubtypeId));
-                //});
             }
 
             Dictionary<string, MyFixedPoint> ItemsToGet = new Config(Me).ItemList;
             Dictionary<string, MyFixedPoint>.Enumerator en = ItemsToGet.GetEnumerator();
             while (en.MoveNext())
             {
-                AddItemToInventory(en.Current.Key, en.Current.Value.ToIntSafe());
+                int CurrentAmountInInventory = InventoryUtils.FindNumberOfItemInInventoriesBySubType(MyInventories, en.Current.Key);
+                int amountToGet = en.Current.Value.ToIntSafe() - CurrentAmountInInventory;
+                Echo($"Amount to get {amountToGet}");
+                if(amountToGet > 0)
+                {
+                    AddItemToInventory(en.Current.Key, amountToGet);
+                }
             }
-
         }
 
         bool AddItemToInventory(string type, int amountRequired)
@@ -77,7 +76,6 @@ namespace IngameScript
                 {
                     int amountToAdd = item.Value.Amount.ToIntSafe() > amountRemaining ? amountRemaining : item.Value.Amount.ToIntSafe();
                     bool result = InventoryUtils.TransferItemToAvailableInventory(item.Value, (MyFixedPoint) amountToAdd, sourceInventory, MyInventories);
-                    Echo(result.ToString());
                     if (result)
                     {
                         amountRemaining = amountRemaining - amountToAdd;
