@@ -33,6 +33,33 @@ namespace IngameScript
 
                 return sum;
             }
+
+            public static int GetBatteryPercentRemaining(List<IMyBatteryBlock> blocks)
+            {
+                float totalCapacity = BlockUtils.GetSumOfBlockAttribute<IMyBatteryBlock>(b => b.MaxStoredPower, blocks);
+                float currentAmount = BlockUtils.GetSumOfBlockAttribute<IMyBatteryBlock>(b => b.CurrentStoredPower, blocks);
+
+                int percent = (int)(currentAmount / totalCapacity * 100);
+                return percent;
+            }
+            public static int GetStorageCapacityRemaining(List<IMyCargoContainer> blocks, Action<string> Echo)
+            {
+                float totalCapacity = BlockUtils.GetSumOfBlockAttribute<IMyCargoContainer>(b => b.GetInventory().MaxVolume.ToIntSafe(), blocks);
+                float currentAmount = BlockUtils.GetSumOfBlockAttribute<IMyCargoContainer>(b => b.GetInventory().CurrentVolume.ToIntSafe(), blocks);
+
+                int percent = (int)(currentAmount / (totalCapacity == 0 ? 1 : totalCapacity) * 100);
+                return percent;
+            }
+            public static int GetThrustCapacityRemaining(List<IMyThrust> blocks, IMyGridTerminalSystem GridTerminalSystem)
+            {
+                //blocks[0].GridThrustDirection;
+                //float totalCapacity = BlockUtils.GetSumOfBlockAttribute<IMyCargoContainer>(b => b.GetInventory().MaxVolume.ToIntSafe(), blocks);
+                //float currentAmount = BlockUtils.GetSumOfBlockAttribute<IMyCargoContainer>(b => b.GetInventory().CurrentVolume.ToIntSafe(), blocks);
+
+                //int percent = (int)(currentAmount / totalCapacity * 100);
+                //return percent;
+                return 1;
+            }
         }
     }
 }

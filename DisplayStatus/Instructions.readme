@@ -1,0 +1,15 @@
+﻿R e a d m e
+-----------
+Each config inherits the LCDConfig. Can add as many configs as you want, each one can
+define the LCDConfig params and then what type of display it should be.
+Supported displays:
+Battery Percent
+Storage Capacity
+
+Config:
+[LCDConfig]
+BlockName=;
+IsProvider=;
+ProviderScreenIndex=;
+
+

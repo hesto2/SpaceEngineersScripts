@@ -1,7 +1,0 @@
-﻿R e a d m e
------------
-Example config
-[LCDConfig]
-BlockName= ;the id of the block to target the script at 
-IsProvider= ;boolean whether the target block is a text surface provider or not
-ProviderScreenIndex= ;integer index of the screen to display on

@@ -23,16 +23,21 @@ namespace IngameScript
     {
         public class LCDUtils
         {
-            public static IMyTextSurface GetScreen(IMyGridTerminalSystem GridTerminalSystem, IMyProgrammableBlock Me)
+            public static IMyTextSurface GetScreen(IMyGridTerminalSystem gridTerminalSystem, IMyProgrammableBlock Me)
             {
                 LCDConfigItem config  = new LCDConfigItem(Me);
+                return GetScreen(gridTerminalSystem, Me, config);
+            }
+
+            public static IMyTextSurface GetScreen(IMyGridTerminalSystem gridTerminalSystem, IMyProgrammableBlock Me, LCDConfigItem config)
+            {
                 List<IMyTerminalBlock> blocks = new List<IMyTerminalBlock>();
-                GridTerminalSystem.SearchBlocksOfName(config.BlockName, blocks, b => b.IsSameConstructAs(Me));
+                gridTerminalSystem.SearchBlocksOfName(config.BlockName, blocks, b => b.IsSameConstructAs(Me));
                 if (blocks.Count == 0)
                 {
                     throw new Exception($"No blocks with name \"{config.BlockName}\" found");
                 }
-                if(blocks.Count > 1)
+                if (blocks.Count > 1)
                 {
                     throw new Exception($"Multiple blocks with name \"{config.BlockName}\" found");
                 }
@@ -47,6 +52,12 @@ namespace IngameScript
                 {
                     return blocks[0] as IMyTextSurface;
                 }
+            }
+
+            public static void WriteToScreen(LCDConfigItem config, string text, IMyProgrammableBlock Me, IMyGridTerminalSystem gridTerminalSystem)
+            {
+                IMyTextSurface screen = GetScreen(gridTerminalSystem, Me, config);
+                screen.WriteText(text);
             }
 
         }

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EBA5AC7D-1A4E-475B-88B4-722B176FEBDA}</ProjectGuid>
+    <ProjectGuid>{7713EEF3-14FA-4A38-BEFD-6E58049D5F78}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>IngameScript</RootNamespace>
-    <AssemblyName>Get Battery Percent</AssemblyName>
+    <AssemblyName>DisplayStatus</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -38,6 +38,8 @@
   <Import Project="MDK/MDK.options.props" />
   <Import Project="MDK/MDK.paths.props" Condition="exists('MDK/MDK.paths.props')" />
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="ConfigItem.cs" />
     <Compile Include="MDK\Bootstrapper.cs" />
     <AdditionalFiles Include="MDK\MDK.options.props">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

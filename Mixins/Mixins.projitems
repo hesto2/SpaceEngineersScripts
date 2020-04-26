@@ -14,5 +14,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)InventoryUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LCDConfigItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LCDUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ShipValue.cs" />
   </ItemGroup>
 </Project>
