@@ -37,6 +37,7 @@ namespace IngameScript
                 this.GridTerminalSystem = GridTerminalSystem;
                 this.DisplayValue = displayValue;
                 this.Echo = Echo;
+                this.ShipController = BlockUtils.GetShipController(GridTerminalSystem, Me);
                 GetRelevantBlocks();
             }
 
@@ -50,6 +51,7 @@ namespace IngameScript
             IMyProgrammableBlock Me;
             ShipDisplayValue DisplayValue;
             List<IMyTerminalBlock> blocks;
+            IMyShipController ShipController;
 
 
             public int GetValue(ShipDisplayValue value)
@@ -60,7 +62,7 @@ namespace IngameScript
                     case ShipDisplayValue.StorageCapacityUsed:
                         return BlockUtils.GetStorageCapacityRemaining(this.blocks.Cast<IMyCargoContainer>().ToList(), Echo);
                     case ShipDisplayValue.ThrustCapacityUsed:
-                        return BlockUtils.GetThrustCapacityRemaining(this.blocks.Cast<IMyThrust>().ToList(), GridTerminalSystem);
+                        return BlockUtils.GetThrustCapacityRemaining(this.blocks.Cast<IMyThrust>().ToList(), ShipController, Echo);
                     default:
                         return 0;
                 }
@@ -87,8 +89,10 @@ namespace IngameScript
                         this.blocks = found;
                         break;
                     case ShipDisplayValue.ThrustCapacityUsed:
-                        GridTerminalSystem.GetBlocksOfType<IMyThrust>(found, b => b.IsSameConstructAs(Me));
-                        this.blocks = found;
+                        List<IMyThrust> thrusters = new List<IMyThrust>();
+                        GridTerminalSystem.GetBlocksOfType<IMyThrust>(thrusters, b => b.IsSameConstructAs(Me));
+                        thrusters =  BlockUtils.GetThrustersEmittingInDirection(thrusters, Base6Directions.Direction.Down);
+                        this.blocks = thrusters.Cast<IMyTerminalBlock>().ToList();
                         break;
                         
                 }
